@@ -12,14 +12,15 @@ function Think()
 		SelectHero( 1, "npc_dota_hero_axe" );
 		SelectHero( 2, "npc_dota_hero_bane" );
 		SelectHero( 3, "npc_dota_hero_bloodseeker" );
-		SelectHero( 4, "npc_dota_hero_crystal_maiden" );
+		SelectHero( 4, "npc_dota_hero_lina" );
+
 	elseif ( GetTeam() == TEAM_DIRE )
 	then
 		print( "selecting dire" );
 		SelectHero( 5, "npc_dota_hero_drow_ranger" );
 		SelectHero( 6, "npc_dota_hero_earthshaker" );
 		SelectHero( 7, "npc_dota_hero_juggernaut" );
-		SelectHero( 8, "npc_dota_hero_mirana" );
+		SelectHero( 8, "npc_dota_hero_crystal_maiden" );
 		SelectHero( 9, "npc_dota_hero_nevermore" );
 	end
 
