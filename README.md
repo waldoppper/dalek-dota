@@ -19,16 +19,22 @@
 2. Place the contents of this repository into ..game\dota\scripts\vscripts\bots
 3. Modify your DotA2 launcher to include `-console`. (for debugging)
 4. Host a local game
-  1. Play Dota
-  2. Create Lobby
+  1. Click "Play DotA"
+  2. Click "Create Lobby"
   3. Edit Settings
     1. Radiant Bots -> Local Dev Script
     2. Dire Bots -> Local Dev Script
-  4. Start Game
+  4. Click "Start Game"
+5. Observe results
+5. Modify lua scripts, saving them to disk
+6. Repeat from Step 4
 
 # Helpful Links
 * [Scripting in DotA 2](https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting)
 * [Dota Bot Scripting](https://developer.valvesoftware.com/wiki/Dota_Bot_Scripting)
+* [API Details - 3rd party, since valves are so bad](http://docs.moddota.com/lua_bots/)
+* [Learn Lua](https://learnxinyminutes.com/docs/lua/)
+
 
 # Known Issues
 * Electing to play on Dire seems to cause half the bots to not pick and for most of them to be naked
