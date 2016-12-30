@@ -41,3 +41,11 @@
 # Known Issues
 * Electing to play on Dire seems to cause half the bots to not pick and for most of them to be naked
 
+
+# Tips
+* To speed up time in your game
+  * open console
+  * type:
+    * sv_cheats 1
+    * host_timescale <float>
+

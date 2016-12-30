@@ -28,7 +28,7 @@
 --
 --function UpdateRoamDesire()
 --
---	return { 0.5, GetTeamMember( TEAM_RADIANT, 1 ) };
+--	return { 0.5, GetTeamMember( TEAM_RADIANT, 1 ) };s
 --
 --end
 --
