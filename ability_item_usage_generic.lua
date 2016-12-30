@@ -7,19 +7,19 @@ module( "ability_item_usage_generic", package.seeall )
 
 ----------------------------------------------------------------------------------------------------
 
-function AbilityUsageThink()
-
-	--print( "Generic.AbilityUsageThink" );
-
-end
+--function AbilityUsageThink()
+--
+--	--print( "Generic.AbilityUsageThink" );
+--
+--end
 
 ----------------------------------------------------------------------------------------------------
 
-function ItemUsageThink()
-
-	--print( "Generic.ItemUsageThink" );
-
-end
+--function ItemUsageThink()
+--
+--	--print( "Generic.ItemUsageThink" );
+--
+--end
 
 ----------------------------------------------------------------------------------------------------
 

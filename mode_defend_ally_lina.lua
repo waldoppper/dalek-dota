@@ -29,7 +29,7 @@ function Think()
 	
 	-- If we have a target and can cast LSA on them, do so
 	if ( npcBot:GetTarget() ~= nil ) then
-		abilityLSA = npcBot:GetAbilityByName( "lina_light_strike_array" );
+		local abilityLSA = npcBot:GetAbilityByName( "lina_light_strike_array" );
 		if ( abilityLSA:IsFullyCastable() )
 		then
 			npcBot:Action_UseAbilityOnLocation( abilityLSA, npcBot:GetTarget():GetLocation() );
@@ -47,7 +47,7 @@ function GetDesire()
 	-- If we have a target and can cast Light Strike Array, our desire to help defend should be higher than normal
 	if ( npcBot:GetTarget() ~= nil )
 	then
-		abilityLSA = npcBot:GetAbilityByName( "lina_light_strike_array" );
+		local abilityLSA = npcBot:GetAbilityByName( "lina_light_strike_array" );
 		if ( abilityLSA:IsFullyCastable() )
 		then
 			fBonus = 0.25;

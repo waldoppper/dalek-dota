@@ -29,8 +29,8 @@ function GetDesire()
 	local npcBot = GetBot();
 
 	local fBestDefendScore = 0;
-	local npcBestDefendableAlly = nil;
-	local npcBestAttackingEnemy = nil;
+	local npcBestDefendableAlly;
+	local npcBestAttackingEnemy;
 	
 	local tableNearbyRetreatingAlliedHeroes = npcBot:GetNearbyHeroes( 1000, false, BOT_MODE_RETREAT );
 	if ( #tableNearbyRetreatingAlliedHeroes == 0 )
@@ -63,7 +63,7 @@ function GetDefendScore( npcAlly, tableNearbyEnemyHeroes )
 	local nTotalEstimatedDamageToAlly = 0;
 	local nTotalEstimatedDamageToMe = 0;
 	local nMostEstimatedDamage = 0;
-	local npcMostDangerousEnemy = nil;
+	local npcMostDangerousEnemy;
 
 	for _,npcEnemy in pairs( tableNearbyEnemyHeroes )
 	do

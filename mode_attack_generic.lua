@@ -7,10 +7,39 @@ module( "mode_defend_ally_generic", package.seeall )
 ----------------------------------------------------------------------------------------------------
 
 function OnStart()
-    local me = GetBot();
-    me:Action_Chat("EXTERMINATE!", true)
 
-    local tableNearbyRetreatingEnemyHeroes = me:GetNearbyHeroes( 3600, true, BOT_MODE_NONE );
+    SetTarget()
+
+end
+
+----------------------------------------------------------------------------------------------------
+
+function OnEnd()
+
+    local npcBot = GetBot();
+    npcBot:Action_Chat("Explain!", true)
+
+end
+
+----------------------------------------------------------------------------------------------------
+
+function Think()
+
+    local me = GetBot();
+    local myTarget = me:GetAttackTarget()
+    if (myTarget:IsAlive())
+    then
+--        me:Action_Chat("Target Eleminated!", true)
+    else
+        SetTarget()
+    end
+
+end
+
+function SetTarget()
+
+    local me = GetBot();
+    local tableNearbyRetreatingEnemyHeroes = me:GetNearbyHeroes( 1000, true, BOT_MODE_NONE );
     local fBestAttackScore = 0;
     local bestRetreatingEnemy;
     -- Who is the best enemy to attack?
@@ -23,37 +52,25 @@ function OnStart()
             bestRetreatingEnemy = npcEnemy;
         end
     end
-
+    local myTargetsName = bestRetreatingEnemy:GetUnitName()
+    me:Action_Chat(string.format("Exterminate %s", myTargetsName), true)
     me:Action_AttackUnit(bestRetreatingEnemy, false)
 
 end
 
 ----------------------------------------------------------------------------------------------------
 
-function OnEnd()
-    local npcBot = GetBot();
-    npcBot:Action_Chat("Explain!", true)
-end
-
-----------------------------------------------------------------------------------------------------
---
---function Think()
---	--print( "mode_defend_ally_generic.Think" );
---end
-
-----------------------------------------------------------------------------------------------------
-
 function GetDesire()
 
 	local npcBot = GetBot();
-
-	local tableNearbyRetreatingEnemyHeroes = npcBot:GetNearbyHeroes( 3600, true, BOT_MODE_NONE);
-	if ( #tableNearbyRetreatingEnemyHeroes == 0 )
+	local nearbyHeroes = npcBot:GetNearbyHeroes( 1000, true, BOT_MODE_NONE);
+	if ( #nearbyHeroes == 0 )
 	then
 		return BOT_MODE_DESIRE_NONE;
     else
-        return 1.0
+        return 0.99
     end
+
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -61,7 +78,6 @@ end
 function GetAttackScore( me, npcEnemy )
 
     local nEstimatedDamageToHim = npcEnemy:GetEstimatedDamageToTarget( false, me, 6.0, DAMAGE_TYPE_ALL );
-
 	return nEstimatedDamageToHim;
 
 end
