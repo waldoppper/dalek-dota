@@ -12,12 +12,13 @@ BOT_MODE_DESIRE_HAM = 0.99 -- HARD AS A MOTHER
 function OnStart()
     print("entering OnStart")
     bot_utils.Yell("Searching for target!")
+    SetTarget()
 end
 
 ----------------------------------------------------------------------------------------------------
 
 function OnEnd()
-    print("entering OnEmd")
+    print("entering OnEnd")
     bot_utils.Yell("Explain!")
 end
 
@@ -71,10 +72,10 @@ function GetDesire()
     -- if we've got a target, keep desire HAM
     if ((not bot_utils:CanExterminateTarget()) and #nearbyEnemies == 0)
     then
-        print("No attack desire")
+        print("Attack Desire: None")
         return BOT_MODE_DESIRE_NONE;
     else
-        print("HAM MODE ENGAGE")
+        print("Attack Desire: HAM MODE")
         return BOT_MODE_DESIRE_HAM
     end
 
