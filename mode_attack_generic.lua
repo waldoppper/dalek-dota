@@ -10,7 +10,7 @@ function OnStart()
     local me = GetBot();
     me:Action_Chat("EXTERMINATE!", true)
 
-    local tableNearbyRetreatingEnemyHeroes = me:GetNearbyHeroes( 1000, true, BOT_MODE_RETREAT );
+    local tableNearbyRetreatingEnemyHeroes = me:GetNearbyHeroes( 3600, true, BOT_MODE_NONE );
     local fBestAttackScore = 0;
     local bestRetreatingEnemy;
     -- Who is the best enemy to attack?
@@ -47,7 +47,7 @@ function GetDesire()
 
 	local npcBot = GetBot();
 
-	local tableNearbyRetreatingEnemyHeroes = npcBot:GetNearbyHeroes( 1000, true, BOT_MODE_RETREAT );
+	local tableNearbyRetreatingEnemyHeroes = npcBot:GetNearbyHeroes( 3600, true, BOT_MODE_NONE);
 	if ( #tableNearbyRetreatingEnemyHeroes == 0 )
 	then
 		return BOT_MODE_DESIRE_NONE;

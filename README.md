@@ -34,6 +34,7 @@
 * [Dota Bot Scripting](https://developer.valvesoftware.com/wiki/Dota_Bot_Scripting)
 * [API Details - 3rd party, since valves are so bad](http://docs.moddota.com/lua_bots/)
 * [Learn Lua](https://learnxinyminutes.com/docs/lua/)
+* [Sharing State](http://dev.dota2.com/showthread.php?t=275238)
 
 
 # Known Issues
