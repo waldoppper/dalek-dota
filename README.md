@@ -18,7 +18,8 @@
 1. Locate your DotA2 install on disk
 2. Place the contents of this repository into ..game\dota\scripts\vscripts\bots
 3. Modify your DotA2 launcher to include `-console`. (for debugging)
-4. Host a local game
+4. Start DotA2
+5. Host a local game
   1. Click "Play DotA"
   2. Click "Create Lobby"
   3. Edit Settings
