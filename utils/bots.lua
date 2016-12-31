@@ -4,10 +4,10 @@ local M = {}
 M["PointsOnLane"] = {}
 
 local function InitPointsOnLane(PointsOnLane)
-    for i = 1, 3, 1 do
-        PointsOnLane[i] = {};
+    for lane = 1, 3, 1 do
+        PointsOnLane[lane] = {};
         for j = 0, 100, 1 do
-            PointsOnLane[i][j] = GetLocationAlongLane(i,j / 100.0);
+            PointsOnLane[lane][j] = GetLocationAlongLane(lane,j / 100.0);
         end
     end
 end
@@ -27,6 +27,7 @@ function M.AbilityOutOfRange4Location(Ability,Location)
     return GetUnitToLocationDistance(GetBot(),Location) > Ability:GetCastRange();
 end
 
+--TODO I don't think this works for DIRE
 function M:GetNearByPrecursorPointOnLane(Lane,Location)
     local npcBot = GetBot();
     local Pos = npcBot:GetLocation();
@@ -39,6 +40,7 @@ function M:GetNearByPrecursorPointOnLane(Lane,Location)
     for i = 1,100,1 do
         local d = (Pos - PointsOnLane[i]):Length2D();
         if(d > prevDist) then
+            -- Presumably this is so that units don't try to move to the same spot in the fountain??
             if i >= 4 then
                 return PointsOnLane[i - 4] + RandomVector(50);
             else
@@ -116,6 +118,7 @@ function M:GetComfortPoint(creeps,LANE)
     local avg_pos_x = x_pos_sum / count;
     local avg_pos_y = y_pos_sum / count;
 
+    -- with centroid located, get a semi-random safe point behind it
     if(count > 0) then
         return self:GetNearByPrecursorPointOnLane(LANE,Vector(avg_pos_x,avg_pos_y)) + RandomVector(20);
     else
@@ -260,7 +263,42 @@ function M:GetCreepHealthDeltaPerSec(creep)
         end
         return 10000000;
     end
+end
 
+MAX_HP_LOG_ENTRIES = 50
+function M:LogVitals()
+    local ix;
+    local hpLog;
+    if self["hp-log"] == nil then
+        hpLog = {}
+        ix = 1
+        self["hp-log"] = hpLog;
+        self["next-hp-log-index"] = ix
+    else
+        hpLog = self["hp-log"]
+        ix = self["next-hp-log-index"]
+    end
+    hpLog[ix]=GetBot():GetHealth();
+    if(ix == MAX_HP_LOG_ENTRIES) then
+        ix = 1
+    end
+    self["next-hp-log-index"] = ix+1
+
+--    for key,value in pairs(hpLog) do print(key,value) end
+end
+
+function M:IsTakingDamage()
+    if self["hp-log"] == nil then return false;
+    else
+        local hpLog = self["hp-log"]
+        local oldestLogIX = self["next-hp-log-index"]
+        local newestLogIX
+        if (oldestLogIX == 1) then newestLogIX = MAX_HP_LOG_ENTRIES;
+        else newestLogIX = oldestLogIX-1 end
+        local takingDamage = hpLog[oldestLogIX] > hpLog[newestLogIX]
+        print(string.format("taking damage: %s", tostring(takingDamage)));
+        return takingDamage
+    end
 end
 
 function M:ConsiderRunAway()
@@ -311,20 +349,39 @@ function M:CanExterminateTarget()
     end
 end
 
-function M:IsTowerAttackingMe()
+function M:IsTowerAThreat()
     local npcBot = GetBot();
-    local NearbyTowers = npcBot:GetNearbyTowers(1000,true);
-    local AllyCreeps = npcBot:GetNearbyCreeps(650,false);
-    if(#NearbyTowers > 0) then
-        for _,tower in pairs( NearbyTowers)
+    local nearbyTowers = npcBot:GetNearbyTowers(800,true);
+    local allyCreeps = npcBot:GetNearbyCreeps(650,false);
+
+    local friendlyCreepHP = 0
+    for _,creep in pairs(allyCreeps)
+    do
+        friendlyCreepHP = friendlyCreepHP + creep:GetHealth()
+    end
+
+    if(#nearbyTowers > 0) then
+        for _,tower in pairs(nearbyTowers)
         do
-            if(GetUnitToUnitDistance(tower,npcBot) < 900 and tower:IsAlive() and #AllyCreeps <= 2) then
-                print("I am attacked by tower");
+            if(GetUnitToUnitDistance(tower,npcBot) < 900 and tower:IsAlive() and friendlyCreepHP <= 500) then
+                print("Tower danger!");
                 return true;
             end
         end
     end
     return false;
+end
+
+--Perry's code from http://dev.dota2.com/showthread.php?t=274837]
+function M:PerryGetHeroLevel()
+    local npcBot = GetBot();
+    local respawnTable = {8, 10, 12, 14, 16, 26, 28, 30, 32, 34, 36, 46, 48, 50, 52, 54, 56, 66, 70, 74, 78,  82, 86, 90, 100};
+    local nRespawnTime = npcBot:GetRespawnTime() +1 -- It gives 1 second lower values.
+    for k,v in pairs (respawnTable) do
+        if v == nRespawnTime then
+            return k
+        end
+    end
 end
 
 return M;
