@@ -36,16 +36,27 @@
 * [API Details - 3rd party, since valves are so bad](http://docs.moddota.com/lua_bots/)
 * [Learn Lua](https://learnxinyminutes.com/docs/lua/)
 * [Sharing State](http://dev.dota2.com/showthread.php?t=275238)
+* [StateMachine usage for bot Think() override](https://github.com/lenLRX/dota2Bots/blob/master/bot_lina.lua)
 
 
 # Known Issues
 * Electing to play on Dire seems to cause half the bots to not pick and for most of them to be naked
 
-
 # Tips
-* To speed up time in your game
-  * open console
-  * type:
-    * sv_cheats 1
-    * host_timescale <float>
+* To speed up time in your game, open console and type:
+    1. `sv_cheats 1`
+    2. `host_timescale <float>`
 
+# Bot Status
+
+##Alchemist
+Learning to last hit while not dying to creeps. Very good progress using the State Machine model authored 
+by [lenRX](https://github.com/lenLRX/dota2Bots/blob/master/bot_lina.lua).
+
+**TODO**
+* Proper Last-Hitting
+* Skill Usage
+* Item Usage
+
+**BUGS**
+* No way to upgrade the new special tree skills
