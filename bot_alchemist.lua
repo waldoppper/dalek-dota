@@ -69,11 +69,11 @@ local function FarmLane(StateMachine)
         if(weakest_creeps_hp < projectedDamageAtAttackTime) then
 --            print(string.format("Weakest creep's HP: %f <= Incoming phys dmg: %f + Interpolated DoT: %f", weakest_creeps_hp, projectedPhysDmg, interpolatedDoT ))
             if(me:GetAttackTarget() == nil) then --StateMachine["attcking creep"]
-                print ("1")
+--                print ("1")
                 me:Action_AttackUnit(weakest_creep,false);
                 return;
             elseif(weakest_creep ~= StateMachine["attcking creep"]) then
-                print ("2")
+--                print ("2")
                 StateMachine["attcking creep"] = weakest_creep;
                 me:Action_AttackUnit(weakest_creep,true);
                 return;

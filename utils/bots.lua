@@ -79,7 +79,7 @@ function M:GetNearBySuccessorPointOnLane(Lane,Location)
     return PointsOnLane[1];
 end
 
-function M.IsItemAvailable(item_name)
+function M.GetInventoryItem(item_name)
     local npcBot = GetBot();
     -- query item code by Hewdraw
     for i = 0, 5, 1 do

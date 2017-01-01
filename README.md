@@ -54,10 +54,11 @@ Learning to last hit while not dying to creeps. Very good progress using the Sta
 by [lenRX](https://github.com/lenLRX/dota2Bots/blob/master/bot_lina.lua).
 
 **TODO**
-* Proper Last-Hitting
+* More states for last-hitting, prevent state change on damage-taken when a CS is available tc
 * Skill Usage
 * Item Usage
 
 **BUGS**
 * No way to upgrade the new special tree skills
 * Using GetUnitToUnitDistance() as a way to measure ability to use physical attack based on published attack range numbers is not sufficient. Alchemist seems to be able to attack from a range of 187.3, rather than 150, which is his declared attack range.
+* Can't use bot utils script in the item_purchase_alchemist.lua - presumably some interaction in the memory model that i dont understand
