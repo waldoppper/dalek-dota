@@ -269,35 +269,54 @@ MAX_HP_LOG_ENTRIES = 50
 function M:LogVitals()
     local ix;
     local hpLog;
+    local myHealth = GetBot():GetHealth();
     if self["hp-log"] == nil then
+        -- initialize hpLog with numbers
         hpLog = {}
         ix = 1
+        for i = ix,MAX_HP_LOG_ENTRIES,1 do
+            hpLog[i]=myHealth
+--            print(string.format("initializing hp log index: %i", i))
+        end
         self["hp-log"] = hpLog;
         self["next-hp-log-index"] = ix
     else
         hpLog = self["hp-log"]
         ix = self["next-hp-log-index"]
     end
-    hpLog[ix]=GetBot():GetHealth();
+    hpLog[ix]=myHealth
     if(ix == MAX_HP_LOG_ENTRIES) then
-        ix = 1
+        self["next-hp-log-index"] = 1
+    else
+        self["next-hp-log-index"] = ix+1
     end
-    self["next-hp-log-index"] = ix+1
 
---    for key,value in pairs(hpLog) do print(key,value) end
+    -- for debugging:
+    --    for key,value in pairs(hpLog) do print(key,value) end
+
+    -- update a piece of state on whether HP is going down
+
+    local newestLogIX = ix
+    local oldestLogIX
+    if (newestLogIX == MAX_HP_LOG_ENTRIES) then oldestLogIX = 1;
+    else oldestLogIX = newestLogIX+1 end
+    local takingDamage = hpLog[oldestLogIX] > hpLog[newestLogIX]
+
+    -- print an update on damage-taking status
+    if (self["taking-damage"] ~= takingDamage) then
+--        print(string.format("oldest/newest ix: %i/%i", oldestLogIX, newestLogIX))
+--        print(string.format("oldest/newest hp: %i/%i", hpLog[oldestLogIX], hpLog[newestLogIX]))
+        print(string.format("Taking Damage: %s", tostring(takingDamage)))
+    end
+
+    self["taking-damage"] = takingDamage
+
 end
 
 function M:IsTakingDamage()
-    if self["hp-log"] == nil then return false;
+    if self["taking-damage"] == nil then return false;
     else
-        local hpLog = self["hp-log"]
-        local oldestLogIX = self["next-hp-log-index"]
-        local newestLogIX
-        if (oldestLogIX == 1) then newestLogIX = MAX_HP_LOG_ENTRIES;
-        else newestLogIX = oldestLogIX-1 end
-        local takingDamage = hpLog[oldestLogIX] > hpLog[newestLogIX]
-        print(string.format("taking damage: %s", tostring(takingDamage)));
-        return takingDamage
+       return self["taking-damage"]
     end
 end
 

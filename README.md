@@ -60,3 +60,4 @@ by [lenRX](https://github.com/lenLRX/dota2Bots/blob/master/bot_lina.lua).
 
 **BUGS**
 * No way to upgrade the new special tree skills
+* Using GetUnitToUnitDistance() as a way to measure ability to use physical attack based on published attack range numbers is not sufficient. Alchemist seems to be able to attack from a range of 187.3, rather than 150, which is his declared attack range.
