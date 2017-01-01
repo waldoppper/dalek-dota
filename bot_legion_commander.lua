@@ -7,25 +7,30 @@ local STATE_JUNGLE_FARM = "STATE_JUNGLE_FARM";
 
 
 local AbilityMap = {
-    [1] = "alchemist_goblins_greed",
-    [2] = "alchemist_acid_spray",
-    [3] = "alchemist_goblins_greed",
-    [4] = "alchemist_acid_spray",
-    [5] = "alchemist_goblins_greed",
-    [6] = "alchemist_chemical_rage",
-    [7] = "alchemist_goblins_greed",
-    [8] = "alchemist_acid_spray",
-    [9] = "alchemist_acid_spray",
+    [1] = "legion_commander_moment_of_courage",
+    [2] = "legion_commander_press_the_attack",
+    [3] = "legion_commander_moment_of_courage",
+    [4] = "legion_commander_press_the_attack",
+    [5] = "legion_commander_moment_of_courage",
+    [6] = "legion_commander_press_the_attack",
+    [7] = "legion_commander_moment_of_courage",
+    [8] = "legion_commander_press_the_attack",
+    [9] = "legion_commander_overwhelming_odds",
     [10] = "special", --TODO
-    [11] = "alchemist_chemical_rage",
-    [12] = "alchemist_unstable_concoction",
-    [13] = "alchemist_unstable_concoction",
-    [14] = "alchemist_unstable_concoction",
+    [11] = "legion_commander_overwhelming_odds",
+    [12] = "legion_commander_overwhelming_odds",
+    [13] = "legion_commander_overwhelming_odds",
+    [14] = "legion_commandert_duel",
     [15] = "special",
-    [16] = "alchemist_chemical_rage",
-    [18] = "alchemist_unstable_concoction",
+    [16] = "legion_commander_duel",
+    [18] = "legion_commander_duel",
     [20] = "special",
     [25] = "special"
+};
+
+local ItemBuyList = {
+  [1] = "iron_talon",
+  [2] = "tango"
 };
 
 local function StateGetRune(State)
