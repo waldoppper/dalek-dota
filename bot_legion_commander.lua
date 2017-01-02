@@ -66,7 +66,7 @@ local function StateGetRune(State)
   end
   
   -- Head to rune spot
-  bot:Action_MoveToLocation(RAD_BOUNTY_RUNE_SAFE);
+  bot:Action_MoveToLocation(Locs.RAD_BOUNTY_RUNE_SAFE);
   
   -- Pick up rune
   bot:Action_PickUpRune(???);
@@ -115,7 +115,7 @@ function Think(  )
     -- Level Abilities
     
     -- Not sure what this does
-    DotaBotUtility:LogVitals()
+    DotaBotUtility:LogVitals();
 
     -- Call state function
     State[State.State](State);
