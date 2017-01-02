@@ -1,6 +1,6 @@
-local DotaBotUtility = require(GetScriptDirectory().."/utils/bots");
-local Constant = require(GetScriptDirectory().."/utils/constants");
-local Locs = require(GetScriptDirectory().."/utils/locations");
+local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bots");
+local Constant = dofile(GetScriptDirectory().."/utils/constants");
+local Locs = dofile(GetScriptDirectory().."/utils/locations");
 
 local STATE_IDLE = "STATE_IDLE";
 local STATE_GET_RUNE = "STATE_GET_RUNE";
@@ -82,7 +82,7 @@ local function StateJungleFarm(State)
   
   local bot = GetBot();
   
-  if(nbot:IsAlive() == false) then
+  if(bot:IsAlive() == false) then
     State.State = STATE_IDLE;
     return;
   end
