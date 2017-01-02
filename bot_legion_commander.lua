@@ -1,4 +1,4 @@
-local DotaBotUtility = require(GetScriptDirectory().."/utils/bots");
+local DotaBotUtility = loadfile(GetScriptDirectory().."/utils/bots");
 local Constant = require(GetScriptDirectory().."/utils/constants");
 local Locs = require(GetScriptDirectory().."/utils/locations");
 
@@ -82,7 +82,7 @@ local function StateJungleFarm(State)
   
   local bot = GetBot();
   
-  if(nbot:IsAlive() == false) then
+  if(bot:IsAlive() == false) then
     State.State = STATE_IDLE;
     return;
   end
@@ -117,7 +117,7 @@ function Think(  )
     -- Level Abilities
     
     -- Not sure what this does
-    DotaBotUtility:LogVitals()
+--    DotaBotUtility:LogVitals()
 
     -- Call state function
     State[State.State](State);

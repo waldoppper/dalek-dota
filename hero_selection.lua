@@ -11,7 +11,8 @@ function Think()
 		SelectHero( 0, "npc_dota_hero_antimage" );
 		SelectHero( 1, "npc_dota_hero_axe" );
 		SelectHero( 2, "npc_dota_hero_bane" );
-		SelectHero( 3, "npc_dota_hero_bloodseeker" );
+--		SelectHero( 3, "npc_dota_hero_bloodseeker" );
+		SelectHero( 3, "npc_dota_hero_legion_commander" );
 		SelectHero( 4, "npc_dota_hero_alchemist" );
 
 	elseif ( GetTeam() == TEAM_DIRE )

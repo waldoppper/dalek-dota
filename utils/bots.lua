@@ -91,7 +91,7 @@ function M:GetInventoryItem(item_name)
     return nil;
 end
 
-function M:GetComfortPoint(creeps,LANE)
+function M:GetLaneComfortPoint(creeps,LANE) -- TODO include heroes
     local npcBot = GetBot();
     local _ = npcBot:GetLocation();
     local x_pos_sum = 0;
@@ -102,8 +102,8 @@ function M:GetComfortPoint(creeps,LANE)
     for _,creep in pairs(creeps)
     do
         local creep_name = creep:GetUnitName();
-        local meleepos = string.find( creep_name,"melee");
-        if(meleepos ~= nil) then
+        local meleeStrIx = string.find( creep_name,"melee");
+        if(meleeStrIx ~= nil) then
             coefficient = meele_coefficient;
         else
             coefficient = 1;
@@ -208,18 +208,23 @@ function M:CreepGC()
     self["creeps"] = swp_table;
 end
 
-function M:UpdateCreepHealth(creep)
+function M:UpdateCreepsHealth(creeps)
     if self["creeps"] == nil then
         self["creeps"] = {};
     end
 
-    if(self["creeps"][creep] == nil) then
-        self["creeps"][creep] = {};
-    end
-    if(creep:GetHealth() < creep:GetMaxHealth()) then
-        self["creeps"][creep][GameTime()] = creep:GetHealth();
-    end
+    for _, creep in pairs(creeps) do
+        if(self["creeps"][creep] == nil) then
+            self["creeps"][creep] = {};
+        end
 
+        local creepHealth = creep:GetHealth();
+        local creepHealthMax = creep:GetMaxHealth();
+        if(creepHealth < creepHealthMax) then
+            self["creeps"][creep][GameTime()] = creep:GetHealth();
+        end
+
+    end
     if(#self["creeps"] > 1000) then
         self:CreepGC();
     end
@@ -305,9 +310,9 @@ function M:LogVitals()
 
     -- print an update on damage-taking status
     if (self["taking-damage"] ~= takingDamage) then
-        print(string.format("oldest/newest ix: %i/%i", oldestLogIX, newestLogIX))
-        print(string.format("oldest/newest hp: %i/%i", hpLog[oldestLogIX], hpLog[newestLogIX]))
-        print(string.format("%s Taking Damage: %s", me:GetUnitName(), tostring(takingDamage)))
+--        print(string.format("oldest/newest ix: %i/%i", oldestLogIX, newestLogIX))
+--        print(string.format("oldest/newest hp: %i/%i", hpLog[oldestLogIX], hpLog[newestLogIX]))
+--        print(string.format("%s Taking Damage: %s", me:GetUnitName(), tostring(takingDamage)))
     end
 
     self["taking-damage"] = takingDamage
