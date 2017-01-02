@@ -79,7 +79,7 @@ function M:GetNearBySuccessorPointOnLane(Lane,Location)
     return PointsOnLane[1];
 end
 
-function M.GetInventoryItem(item_name)
+function M:GetInventoryItem(item_name)
     local npcBot = GetBot();
     -- query item code by Hewdraw
     for i = 0, 5, 1 do
@@ -269,7 +269,8 @@ MAX_HP_LOG_ENTRIES = 50
 function M:LogVitals()
     local ix;
     local hpLog;
-    local myHealth = GetBot():GetHealth();
+    local me = GetBot();
+    local myHealth = me:GetHealth();
     if self["hp-log"] == nil then
         -- initialize hpLog with numbers
         hpLog = {}
@@ -304,9 +305,9 @@ function M:LogVitals()
 
     -- print an update on damage-taking status
     if (self["taking-damage"] ~= takingDamage) then
---        print(string.format("oldest/newest ix: %i/%i", oldestLogIX, newestLogIX))
---        print(string.format("oldest/newest hp: %i/%i", hpLog[oldestLogIX], hpLog[newestLogIX]))
-        print(string.format("Taking Damage: %s", tostring(takingDamage)))
+        print(string.format("oldest/newest ix: %i/%i", oldestLogIX, newestLogIX))
+        print(string.format("oldest/newest hp: %i/%i", hpLog[oldestLogIX], hpLog[newestLogIX]))
+        print(string.format("%s Taking Damage: %s", me:GetUnitName(), tostring(takingDamage)))
     end
 
     self["taking-damage"] = takingDamage

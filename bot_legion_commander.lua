@@ -34,11 +34,12 @@ local ItemBuyList = {
   [2] = "tango"
 };
 
-local TimeToGetRune() {
-  
-}
+local function TimeToGetRune()
 
-local function StateIdle(State) {
+end
+
+
+local function StateIdle(State)
     
     local npcBot = GetBot();
     if(npcBot:IsAlive() == false) then
@@ -53,7 +54,8 @@ local function StateIdle(State) {
     end
     
     return;
-}
+end
+
 
 local function StateGetRune(State)
   
@@ -69,7 +71,7 @@ local function StateGetRune(State)
   bot:Action_MoveToLocation(Locs.RAD_BOUNTY_RUNE_SAFE);
   
   -- Pick up rune
-  bot:Action_PickUpRune(???);
+--  bot:Action_PickUpRune(???);
   
   -- If rune is picked up
   State.State = STATE_JUNGLE_FARM;
@@ -97,7 +99,7 @@ end
 
 
 local State = {};
-State["State"] = STATE;
+State["State"] = STATE_IDLE;
 State[STATE_IDLE] = StateIdle;
 State[STATE_GET_RUNE] = StateGetRune;
 State[STATE_JUNGLE_FARM] = StateJungleFarm;
