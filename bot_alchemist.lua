@@ -151,7 +151,7 @@ local function StateTraveling(StateMachine)
 
     -- buy a tp and get out
     if(hero:DistanceFromFountain() < 100 and DotaTime() > 0) then
-        local tpscroll = DotaBotUtility.GetInventoryItem("item_tpscroll");
+        local tpscroll = DotaBotUtility:GetInventoryItem("item_tpscroll");
         if(tpscroll == nil and DotaBotUtility:HasEmptySlot() and hero:GetGold() >= GetItemCost("item_tpscroll")) then
             print("buying tp");
             hero:Action_PurchaseItem("item_tpscroll");
