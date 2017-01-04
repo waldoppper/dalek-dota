@@ -1,4 +1,4 @@
-local DotaBotUtility = loadfile(GetScriptDirectory().."/utils/bots");
+local DotaBotUtility = loadfile(GetScriptDirectory().."/utils/bot");
 local Constant = require(GetScriptDirectory().."/utils/constants");
 local Locs = require(GetScriptDirectory().."/utils/locations");
 

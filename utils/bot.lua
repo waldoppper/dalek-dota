@@ -186,49 +186,6 @@ function M:GetFrontTowerAt(LANE)
     return nil;
 end
 
-function M:CreepGC()
-    -- does it works? i don't know
-    print("CreepGC");
-    local swp_table = {}
-    for handle,time_health in pairs(self["creeps"])
-    do
-        local rm = false;
-        for t,_ in pairs(time_health)
-        do
-            if(GameTime() - t > 60) then
-                rm = true;
-            end
-            break;
-        end
-        if not rm then
-            swp_table[handle] = time_health;
-        end
-    end
-
-    self["creeps"] = swp_table;
-end
-
-function M:UpdateCreepsHealth(creeps)
-    if self["creeps"] == nil then
-        self["creeps"] = {};
-    end
-
-    for _, creep in pairs(creeps) do
-        if(self["creeps"][creep] == nil) then
-            self["creeps"][creep] = {};
-        end
-
-        local creepHealth = creep:GetHealth();
-        local creepHealthMax = creep:GetMaxHealth();
-        if(creepHealth < creepHealthMax) then
-            self["creeps"][creep][GameTime()] = creep:GetHealth();
-        end
-
-    end
-    if(#self["creeps"] > 1000) then
-        self:CreepGC();
-    end
-end
 
 function pairsByKeys(t, f)
     local a = {}
@@ -247,26 +204,6 @@ end
 function sortFunc(a , b)
     if a < b then
         return true
-    end
-end
-
-function M:GetCreepHealthDeltaPerSec(creep)
-    if self["creeps"] == nil then
-        self["creeps"] = {};
-    end
-
-    if(self["creeps"][creep] == nil) then
-        return 10000000;
-    else
-        for _time,_health in pairsByKeys(self["creeps"][creep],sortFunc)
-        do
-            -- only Consider very recent datas
-            if(GameTime() - _time < 3) then
-                local e = (_health - creep:GetHealth()) / (GameTime() - _time);
-                return e;
-            end
-        end
-        return 10000000;
     end
 end
 

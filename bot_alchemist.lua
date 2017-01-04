@@ -1,4 +1,5 @@
-local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bots");
+local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bot");
+local EnvironmentUtil = dofile(GetScriptDirectory().."/utils/environment");
 local Constant = require(GetScriptDirectory().."/utils/constants");
 
 local STATE_IDLE = "STATE_IDLE";
@@ -23,115 +24,15 @@ local function ShouldHeal()
            or me:GetMana() / me:GetMaxMana() < RetreatMPThresh;
 end
 
-local function KillCreep(StateMachine)
-    local me = GetBot();
-    if ( me:IsUsingAbility() ) then return end;
-
-    local enemyCreeps = me:GetNearbyCreeps(1000,true);
-    -- Check if we're already using an ability
-
-    -- TODO Consider using each ability
-
-    --If we dont cast ability, just try to last hit.
-
-    local weakest_creeps_hp = 100000;
-    local weakest_creep
-    for _,creep in pairs(enemyCreeps)
-    do
---        local creep_name = creep:GetUnitName();
---        print(creep_name);
-        if(creep:IsAlive()) then
-            local creep_hp = creep:GetHealth()
-            if(weakest_creeps_hp > creep_hp) then
-                weakest_creeps_hp = creep_hp
-                weakest_creep = creep
-            end
-        end
-    end
-
-    local myMovementSpeed = me:GetCurrentMovementSpeed()
-    local weakestCreepPctHP = weakest_creep:GetHealth() / weakest_creep:GetMaxHealth();
-    if(weakest_creep ~= nil and weakestCreepPctHP < 0.5 ) then
-        local distanceToTarget = GetUnitToUnitDistance(me,weakest_creep)
-        local distanceToClose = math.max(0, (GetUnitToUnitDistance(me,weakest_creep) - ATTACK_RANGE))
-        local timeToApproachTarget = distanceToClose / myMovementSpeed
-        local myAttackPoint = me:GetAttackPoint()
-        -- dampen this by base attack dmg variability --TODO don't hardcode it
-        local projectedPhysDmg = weakest_creep:GetActualDamage(me:GetBaseDamage(),DAMAGE_TYPE_PHYSICAL) - 12
-        local creepsIncomingDPS = DotaBotUtility:GetCreepHealthDeltaPerSec(weakest_creep)
-        local interpolatedDoT = creepsIncomingDPS * (timeToApproachTarget + myAttackPoint)
-        local projectedDamageAtAttackTime = projectedPhysDmg + interpolatedDoT
-
---        print(string.format(
---            "MS: %f. My Attack Point: %f. Distance to target: %f, Distance to close: %f. My dmg: %f. Approach time: %f. Creeps iDPS: %f, Interpolated DoT: %f. Final Total After My Attack: %f. Target HP: %f",
---            myMovementSpeed, myAttackPoint, distanceToTarget, distanceToClose, projectedPhysDmg, timeToApproachTarget, creepsIncomingDPS, interpolatedDoT, projectedDamageAtAttackTime, weakest_creeps_hp ))
-
-        -- LAST HIT THE SUCKER
-        if(weakest_creeps_hp < projectedDamageAtAttackTime) then
---            print(string.format("Weakest creep's HP: %f <= Incoming phys dmg: %f + Interpolated DoT: %f", weakest_creeps_hp, projectedPhysDmg, interpolatedDoT ))
-            if(me:GetAttackTarget() == nil) then --StateMachine["attcking creep"]
---                print ("1")
-                me:Action_AttackUnit(weakest_creep,false);
-                return;
-            elseif(weakest_creep ~= StateMachine["attcking creep"]) then
---                print ("2")
-                StateMachine["attcking creep"] = weakest_creep;
-                me:Action_AttackUnit(weakest_creep,true);
-                return;
-            end
-
---        -- OTHERWISE, PUMP FAKE.
---        elseif (distanceToTarget <= ATTACK_RANGE) then
---            -- simulation of human attack and stop
---            if(me:GetCurrentActionType() == BOT_ACTION_TYPE_ATTACK) then
---                print ("Cancel")
---                me:Action_ClearActions(true);
---                return;
---            else
---                print ("Swing")
---                me:Action_AttackUnit(weakest_creep,false);
---                return;
---            end
-        else
-            return;
-        end
-        weakest_creep = nil;
-
-    end
-    -- nothing to do , try to attack heros
-
-    -- return
-
-    -- hit creeps to push
-    local currentTime = DotaTime();
-    for _,creep in pairs(enemyCreeps)
-    do
---        local creep_name = creep:GetUnitName();
---        print(creep_name);
-        if(creep:IsAlive()) then
-            if(currentTime > 1800) then
-                me:Action_AttackUnit(creep,false);
-                return;
-            end
-            local creep_hp = creep:GetHealth();
-            if(weakest_creeps_hp > creep_hp) then
-                weakest_creeps_hp = creep_hp;
-                weakest_creep = creep;
-            end
-        end
-    end
-
-end
-
 -------------------local states-----------------------------------------------------
 
 local function StateIdle(StateMachine)
-    local hero = GetBot();
-    if(hero:IsAlive() == false) then
+    local me = GetBot();
+    if(me:IsAlive() == false) then
         return;
     end
 
-    if ( hero:IsUsingAbility() or hero:IsChanneling()) then return end;
+    if ( me:IsUsingAbility() or me:IsChanneling()) then return end;
 
     if(ShouldHeal()) then
         StateMachine.State = STATE_FOUNTAIN_HEALING;
@@ -141,12 +42,14 @@ local function StateIdle(StateMachine)
         return;
     end
 
-    local creeps = hero:GetNearbyCreeps(1000,true);
-    local allyCreeps = hero:GetNearbyCreeps(1000,false);
+    local creeps = me:GetNearbyCreeps(1400,true);
+    local allyCreeps = me:GetNearbyCreeps(1000,false);
 
-    DotaBotUtility:UpdateCreepsHealth(creeps)
+    EnvironmentUtil:UpdateCreepsStatus(me, creeps)
 
-    if(false) then
+    local creepToKill = EnvironmentUtil:FindCreepToKill()
+
+    if(creepToKill) then
         StateMachine.State = STATE_CSING
         return
     elseif (#allyCreeps > 0) then
@@ -188,6 +91,9 @@ local function StateMoveToLane(StateMachine)
                 hero:Action_UseAbilityOnEntity(tpscroll,tower);
                 return;
             end
+        else
+            hero:Action_MoveToLocation(towersLocation);
+            return;
         end
     elseif(GetUnitToLocationDistance(hero, towersLocation) > 400) then
         hero:Action_MoveToLocation(towersLocation);
@@ -263,6 +169,14 @@ local function StateFindLaneSafety(StateMachine)
         StateMachine["comfort-point"] = nil;
         StateMachine.State = STATE_RUN_AWAY;
         return;
+    end
+
+    local creeps = me:GetNearbyCreeps(1400,true);
+    EnvironmentUtil:UpdateCreepsStatus(me, creeps);
+    local creepToKill = EnvironmentUtil:FindCreepToKill()
+    if(creepToKill) then
+        StateMachine.State = STATE_CSING
+        return
     elseif(comfortPoint ~= nil and GetUnitToLocationDistance(me, comfortPoint) < 100) then
         StateMachine["comfort-point"] = nil;
         StateMachine.State = STATE_IDLE;
@@ -318,24 +232,26 @@ local function StateCsing(StateMachine)
         return;
     end
 
-    local creeps = me:GetNearbyCreeps(1000,true);
-    DotaBotUtility:UpdateCreepsHealth(creeps);
-
-    if ( me:IsUsingAbility() or me:IsChanneling()) then return end;
-
-    if(ShouldHeal()) then
-        StateMachine.State = STATE_FOUNTAIN_HEALING;
-        return;
+    if ( me:IsUsingAbility() or me:IsChanneling()) then return
     elseif(DotaBotUtility:IsTowerAThreat()) then
         StateMachine.State = STATE_RUN_AWAY;
         return;
+    end
 
+    local creeps = me:GetNearbyCreeps(1400,true);
+    EnvironmentUtil:UpdateCreepsStatus(me, creeps);
 
-    elseif(#creeps > 0) then
-        if(DotaBotUtility:IsTakingDamage()) then StateMachine.State = STATE_FIND_LANE_SAFETY;
-        else
-            KillCreep(StateMachine);
-        end
+    local creepTarget = EnvironmentUtil:FindCreepToKill()
+    if(creepTarget and creepTarget:IsAlive()) then
+        me:Action_AttackUnit(creepTarget,true);
+    else -- the HP status changed and we shouldn't continue hitting
+        me:Action_ClearActions(true);
+    end
+
+    if(DotaBotUtility:IsTakingDamage()) then
+        StateMachine["comfort-point"] = nil;
+        StateMachine.State = STATE_RUN_AWAY;
+        return;
     else
         StateMachine.State = STATE_IDLE;
         return;
@@ -383,21 +299,29 @@ end
 
 local function TryLeveling()
     -- Is there a bug? http://dev.dota2.com/showthread.php?t=274436
-    local npcBot = GetBot();
-    local heroLevel = DotaBotUtility:PerryGetHeroLevel();
-    local abilityName = AbilityMap[heroLevel]
-    if(NeedsLeveling[heroLevel]) then
-        print(string.format("Leveling to %i. Picking %s", heroLevel, abilityName ))
-        npcBot:Action_LevelAbility(abilityName);
-        NeedsLeveling[heroLevel] = false;
+    local me = GetBot();
+    local myLevel = DotaBotUtility:PerryGetHeroLevel();
+    local abilityName = AbilityMap[myLevel]
+    if(NeedsLeveling[myLevel]) then
+        print(string.format("Leveling to %i. Picking %s", myLevel, abilityName ))
+        me:Action_LevelAbility(abilityName);
+        NeedsLeveling[myLevel] = false;
     end
+end
+
+local function TryUseCrow()
+    local me = GetBot();
+    if(IsCourierAvailable()) then
+        me:Action_CourierDeliver()
+    end
+
 end
 
 local PrevState = "none";
 function Think(  )
-    local _ = GetBot();
-    -- TODO CROW
+
     TryLeveling();
+    TryUseCrow();
 
     DotaBotUtility:LogVitals()
 

@@ -1,4 +1,4 @@
-local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bots");
+local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bot");
 
 local tableItemsToBuy = {
     "item_stout_shield",
