@@ -1,6 +1,6 @@
-local DotaBotUtility = loadfile(GetScriptDirectory().."/utils/bot");
-local Constant = require(GetScriptDirectory().."/utils/constants");
-local Locs = require(GetScriptDirectory().."/utils/locations");
+local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bots");
+local Constant = dofile(GetScriptDirectory().."/utils/constants");
+local Locs = dofile(GetScriptDirectory().."/utils/locations");
 
 local STATE_IDLE = "STATE_IDLE";
 local STATE_GET_RUNE = "STATE_GET_RUNE";
@@ -68,7 +68,7 @@ local function StateGetRune(State)
   end
   
   -- Head to rune spot
-  bot:Action_MoveToLocation(RAD_BOUNTY_RUNE_SAFE);
+  bot:Action_MoveToLocation(Locs.RAD_BOUNTY_RUNE_SAFE);
   
   -- Pick up rune
 --  bot:Action_PickUpRune(???);
@@ -117,7 +117,11 @@ function Think(  )
     -- Level Abilities
     
     -- Not sure what this does
+<<<<<<< HEAD
 --    DotaBotUtility:LogVitals()
+=======
+    DotaBotUtility:LogVitals();
+>>>>>>> dbb8b1c92d22e0726a2690f190735d36b9405bdc
 
     -- Call state function
     State[State.State](State);
