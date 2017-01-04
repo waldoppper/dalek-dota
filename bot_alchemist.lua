@@ -13,6 +13,8 @@ local STATE_RUN_AWAY = "STATE_RUN_AWAY";
 local RetreatHPThresh = 0.3;
 local RetreatMPThresh = 0.1;
 
+local ULT_NAME = "alchemist_chemical_rage"
+
 local STATE = STATE_IDLE;
 local LANE = LANE_MID
 
@@ -275,17 +277,17 @@ local AbilityMap = {
     [3] = "alchemist_goblins_greed", --TODO this doesn't seem to get leveled here
     [4] = "alchemist_acid_spray",
     [5] = "alchemist_goblins_greed",
-    [6] = "alchemist_chemical_rage",
+    [6] = ULT_NAME,
     [7] = "alchemist_goblins_greed",
     [8] = "alchemist_acid_spray",
     [9] = "alchemist_acid_spray",
     [10] = "special", --TODO
-    [11] = "alchemist_chemical_rage",
+    [11] = ULT_NAME,
     [12] = "alchemist_unstable_concoction",
     [13] = "alchemist_unstable_concoction",
     [14] = "alchemist_unstable_concoction",
     [15] = "special",
-    [16] = "alchemist_chemical_rage",
+    [16] = ULT_NAME,
     [18] = "alchemist_unstable_concoction",
     [20] = "special",
     [25] = "special"
@@ -314,7 +316,14 @@ local function TryUseCrow()
     if(IsCourierAvailable()) then
         me:Action_CourierDeliver()
     end
+end
 
+local function TryUseUlt()
+    local me = GetBot();
+    local myUlt = me:GetAbilityByName(ULT_NAME)
+    if(myUlt:IsFullyCastable()) then
+        myUlt:Action_UseAbility()
+    end
 end
 
 local PrevState = "none";
@@ -322,6 +331,8 @@ function Think(  )
 
     TryLeveling();
     TryUseCrow();
+    -- Always-on Ult
+    TryUseUlt();
 
     DotaBotUtility:LogVitals()
 
