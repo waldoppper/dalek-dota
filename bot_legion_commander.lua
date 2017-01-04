@@ -117,11 +117,7 @@ function Think(  )
     -- Level Abilities
     
     -- Not sure what this does
-<<<<<<< HEAD
 --    DotaBotUtility:LogVitals()
-=======
-    DotaBotUtility:LogVitals();
->>>>>>> dbb8b1c92d22e0726a2690f190735d36b9405bdc
 
     -- Call state function
     State[State.State](State);
