@@ -1,4 +1,4 @@
-local DotaBotUtility = require(GetScriptDirectory().."/utils/bots");
+local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bot");
 
 local tableItemsToBuy = {
     "item_stout_shield",
@@ -6,8 +6,12 @@ local tableItemsToBuy = {
     "item_boots",
     "item_belt_of_strength",
     "item_gloves",
-    "item_maelstrom",
-    "item_butterfly",
+    "item_gloves",
+    "item_mithril_hammer",
+    "item_recipe_maelstrom",
+    "item_eagle",
+    "item_talisman_of_evasion",
+    "item_quarterstaff",
 --    "item_recipe_force_staff",
 --    "item_point_booster",
 --    "item_staff_of_wizardry",

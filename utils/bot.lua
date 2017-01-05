@@ -91,7 +91,7 @@ function M:GetInventoryItem(item_name)
     return nil;
 end
 
-function M:GetComfortPoint(creeps,LANE)
+function M:GetLaneComfortPoint(creeps,LANE) -- TODO include heroes
     local npcBot = GetBot();
     local _ = npcBot:GetLocation();
     local x_pos_sum = 0;
@@ -102,8 +102,8 @@ function M:GetComfortPoint(creeps,LANE)
     for _,creep in pairs(creeps)
     do
         local creep_name = creep:GetUnitName();
-        local meleepos = string.find( creep_name,"melee");
-        if(meleepos ~= nil) then
+        local meleeStrIx = string.find( creep_name,"melee");
+        if(meleeStrIx ~= nil) then
             coefficient = meele_coefficient;
         else
             coefficient = 1;
@@ -186,44 +186,6 @@ function M:GetFrontTowerAt(LANE)
     return nil;
 end
 
-function M:CreepGC()
-    -- does it works? i don't know
-    print("CreepGC");
-    local swp_table = {}
-    for handle,time_health in pairs(self["creeps"])
-    do
-        local rm = false;
-        for t,_ in pairs(time_health)
-        do
-            if(GameTime() - t > 60) then
-                rm = true;
-            end
-            break;
-        end
-        if not rm then
-            swp_table[handle] = time_health;
-        end
-    end
-
-    self["creeps"] = swp_table;
-end
-
-function M:UpdateCreepHealth(creep)
-    if self["creeps"] == nil then
-        self["creeps"] = {};
-    end
-
-    if(self["creeps"][creep] == nil) then
-        self["creeps"][creep] = {};
-    end
-    if(creep:GetHealth() < creep:GetMaxHealth()) then
-        self["creeps"][creep][GameTime()] = creep:GetHealth();
-    end
-
-    if(#self["creeps"] > 1000) then
-        self:CreepGC();
-    end
-end
 
 function pairsByKeys(t, f)
     local a = {}
@@ -242,26 +204,6 @@ end
 function sortFunc(a , b)
     if a < b then
         return true
-    end
-end
-
-function M:GetCreepHealthDeltaPerSec(creep)
-    if self["creeps"] == nil then
-        self["creeps"] = {};
-    end
-
-    if(self["creeps"][creep] == nil) then
-        return 10000000;
-    else
-        for _time,_health in pairsByKeys(self["creeps"][creep],sortFunc)
-        do
-            -- only Consider very recent datas
-            if(GameTime() - _time < 3) then
-                local e = (_health - creep:GetHealth()) / (GameTime() - _time);
-                return e;
-            end
-        end
-        return 10000000;
     end
 end
 
@@ -305,9 +247,9 @@ function M:LogVitals()
 
     -- print an update on damage-taking status
     if (self["taking-damage"] ~= takingDamage) then
-        print(string.format("oldest/newest ix: %i/%i", oldestLogIX, newestLogIX))
-        print(string.format("oldest/newest hp: %i/%i", hpLog[oldestLogIX], hpLog[newestLogIX]))
-        print(string.format("%s Taking Damage: %s", me:GetUnitName(), tostring(takingDamage)))
+--        print(string.format("oldest/newest ix: %i/%i", oldestLogIX, newestLogIX))
+--        print(string.format("oldest/newest hp: %i/%i", hpLog[oldestLogIX], hpLog[newestLogIX]))
+--        print(string.format("%s Taking Damage: %s", me:GetUnitName(), tostring(takingDamage)))
     end
 
     self["taking-damage"] = takingDamage

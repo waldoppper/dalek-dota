@@ -28,7 +28,8 @@
   4. Click "Start Game"
 5. Observe results
 5. Modify lua scripts, saving them to disk
-6. Repeat from Step 4
+6. Open the console and type: `dota_bot_reload_scripts`
+7. Iterate from step 5
 
 # Helpful Links
 * [Scripting in DotA 2](https://developer.valvesoftware.com/wiki/Dota_2_Workshop_Tools/Scripting)
@@ -41,11 +42,14 @@
 
 # Known Issues
 * Electing to play on Dire seems to cause half the bots to not pick and for most of them to be naked
+* Using GetUnitToUnitDistance() as a way to measure ability to use physical attack based on published attack range numbers is not sufficient. Alchemist seems to be able to attack from a range of 187.3, rather than 150, which is his declared attack range. See [dev forum pos](http://dev.dota2.com/showthread.php?t=275597t)
+* No way to upgrade the new special tree skills
 
 # Tips
 * To speed up time in your game, open console and type:
     1. `sv_cheats 1`
     2. `host_timescale <float>`
+* To reload scripts mid-match, open the console and type: `dota_bot_reload_scripts`
 
 # Bot Status
 
@@ -54,11 +58,11 @@ Learning to last hit while not dying to creeps. Very good progress using the Sta
 by [lenRX](https://github.com/lenLRX/dota2Bots/blob/master/bot_lina.lua).
 
 **TODO**
-* More states for last-hitting, prevent state change on damage-taken when a CS is available tc
+* Secret Shop Purchasing
 * Skill Usage
 * Item Usage
+* HAM state
 
 **BUGS**
-* No way to upgrade the new special tree skills
-* Using GetUnitToUnitDistance() as a way to measure ability to use physical attack based on published attack range numbers is not sufficient. Alchemist seems to be able to attack from a range of 187.3, rather than 150, which is his declared attack range.
-* Can't use bot utils script in the item_purchase_alchemist.lua - presumably some interaction in the memory model that i dont understand
+* creep HP status via environment.lua needs some love. regression over last 3 seconds isnt good enough to determine future HP
+* bot won't return the crow when he's done with it
