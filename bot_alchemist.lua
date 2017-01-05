@@ -322,7 +322,7 @@ local function TryUseUlt()
     local me = GetBot();
     local myUlt = me:GetAbilityByName(ULT_NAME)
     if(myUlt:IsFullyCastable()) then
-        myUlt:Action_UseAbility()
+        me:Action_UseAbility(myUlt)
     end
 end
 

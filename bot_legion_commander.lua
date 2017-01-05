@@ -1,4 +1,4 @@
-local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bots");
+local DotaBotUtility = dofile(GetScriptDirectory().."/utils/bot");
 local Constant = dofile(GetScriptDirectory().."/utils/constants");
 local Locs = dofile(GetScriptDirectory().."/utils/locations");
 
