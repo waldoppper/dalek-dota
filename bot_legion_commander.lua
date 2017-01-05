@@ -34,8 +34,9 @@ local ItemBuyList = {
   [2] = "tango"
 };
 
+-- Can't pick up runes atm
 local function TimeToGetRune()
-
+    return false;
 end
 
 
