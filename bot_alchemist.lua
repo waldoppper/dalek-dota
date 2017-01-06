@@ -167,7 +167,7 @@ local function StateFindLaneSafety(StateMachine)
         StateMachine["comfort-point"] = nil;
         StateMachine.State = STATE_FOUNTAIN_HEALING;
         return;
-    elseif(DotaBotUtility:IsTowerAThreat() or DotaBotUtility:IsTakingDamage()) then
+    elseif(DotaBotUtility:IsTowerAThreat()) then
         StateMachine["comfort-point"] = nil;
         StateMachine.State = STATE_RUN_AWAY;
         return;
@@ -186,7 +186,8 @@ local function StateFindLaneSafety(StateMachine)
     elseif(#allyCreeps > 0 and comfortPoint ~= nil) then
         me:Action_MoveToLocation(comfortPoint);
         return;
-    else print(string.format("How Did I get Here?? CreepCount %i or comfyPoint nil? %s", #allyCreeps, tostring(comfortPoint==nil)))
+    else
+        StateMachine.State = STATE_IDLE;
     end
 end
 

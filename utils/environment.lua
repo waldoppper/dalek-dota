@@ -67,10 +67,10 @@ function M:UpdateCreepsStatus(hero, creeps)
 
     --
     --debugging
-    local debugLines = "\n---Enemy Creep Status Table---"..
-            "\n-----------------------------------------------------\n"..
-            "name\tiDPS\tHP\tTb4K\tCan Kill?"..
-            "\n-----------------------------------------------------\n"
+--    local debugLines = "\n---Enemy Creep Status Table---"..
+--            "\n-----------------------------------------------------\n"..
+--            "name\tiDPS\tHP\tTb4K\tCan Kill?"..
+--            "\n-----------------------------------------------------\n"
     --debugging
     --
 
@@ -78,7 +78,7 @@ function M:UpdateCreepsStatus(hero, creeps)
 
         --
         --debugging
-        debugLines = debugLines.."\n"..GetFriendlyCreepName(creep).."\t"
+--        debugLines = debugLines.."\n"..GetFriendlyCreepName(creep).."\t"
         --debugging
         --
 
@@ -110,30 +110,30 @@ function M:UpdateCreepsStatus(hero, creeps)
 
             --
             -- debugging
-            debugLines = debugLines..string.format("%.1f", idps).."\t"..
-                    string.format("%i", creepHealth).."\t"..
-                    string.format("%.1f", timeBeforHeroKillable).."\t"..
-                    tostring(isKillableByHero).."\t"
+--            debugLines = debugLines..string.format("%.1f", idps).."\t"..
+--                    string.format("%i", creepHealth).."\t"..
+--                    string.format("%.1f", timeBeforHeroKillable).."\t"..
+--                    tostring(isKillableByHero).."\t"
             -- debugging
             --
         end
 
         --
         -- debugging
-        if creepStatus[HP_TICKS] then
---            for _, hp in pairs(creepStatus[HP_TICKS]) do
---                debugLines = debugLines .."\t"..hp
---            end
-        end
+--        if creepStatus[HP_TICKS] then
+----            for _, hp in pairs(creepStatus[HP_TICKS]) do
+----                debugLines = debugLines .."\t"..hp
+----            end
+--        end
         -- debugging
         --
     end
 
     -- debugging
-    if(true) then
-        print(debugLines)
-        print(string.format("keeping track of %i creep status", creepStatusCount))
-    end
+--    if(true) then
+--        print(debugLines)
+--        print(string.format("keeping track of %i creep status", creepStatusCount))
+--    end
     -- debugging
 
 --    if(creepStatusCount > 15) then -- TODO change back to 500 or something

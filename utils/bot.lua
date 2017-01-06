@@ -91,6 +91,19 @@ function M:GetInventoryItem(item_name)
     return nil;
 end
 
+function M:NumInventorySlotsUsed()
+    local npcBot = GetBot();
+    local count = 0;
+    -- query item code by Hewdraw
+    for i = 0, 5, 1 do
+        local item = npcBot:GetItemInSlot(i);
+        if item then
+          count = count+1
+        end
+    end
+    return count;
+end
+
 function M:GetLaneComfortPoint(creeps,LANE) -- TODO include heroes
     local npcBot = GetBot();
     local _ = npcBot:GetLocation();
